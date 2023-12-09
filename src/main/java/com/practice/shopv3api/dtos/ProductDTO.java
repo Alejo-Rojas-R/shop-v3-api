@@ -1,35 +1,22 @@
-package com.practice.shopv3api.entities;
+package com.practice.shopv3api.dtos;
 
-import jakarta.persistence.*;
-
-import java.util.List;
-
-@Entity
-@Table
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ProductDTO {
     private String name;
     private Float price;
     private Float discount;
     private String description;
     private Integer stock;
-    @OneToMany(mappedBy = "product")
-    List<Order> order;
-    @OneToMany(mappedBy = "product")
-    List<Image> image;
-    @ManyToOne(optional = false)
-    Category category;
+    private Long categoryId;
 
-    public Product() {
+    public ProductDTO() {
     }
-
-    public Product(String name, Float price, Float discount, String description, Integer stock, Category category) {
+    public ProductDTO(String name, Float price, Float discount, String description, Integer stock, Long categoryId) {
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.category = category;
+        this.description = description;
+        this.stock = stock;
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -56,12 +43,12 @@ public class Product {
         this.discount = discount;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getDescription() {

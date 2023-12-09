@@ -1,0 +1,45 @@
+package com.practice.shopv3api.controllers;
+
+import com.practice.shopv3api.dtos.OrderDTO;
+import com.practice.shopv3api.entities.Order;
+import com.practice.shopv3api.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("api/v1/shop-v3/orders")
+public class OrderController {
+    private final OrderService service;
+
+    @Autowired
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+
+    @PostMapping()
+    public void createOrder(@RequestBody OrderDTO dto) {
+        this.service.createOrder(dto);
+    }
+
+    @GetMapping()
+    public List<Order> readOrders(){
+        return service.readOrders();
+    }
+
+    @GetMapping("/order/{id}")
+    public Order readOrderById(@PathVariable Long id){
+        return service.readOrderById(id);
+    }
+
+    @PutMapping("/order/{id}")
+    public Order updateOrder(@PathVariable("id") Long id, OrderDTO dto){
+        return service.updateOrder(id, dto);
+    }
+
+    @DeleteMapping("/order/{id}")
+    public void deleteOrder(@PathVariable("id") Long id){
+        service.deleteOrder(id);
+    }
+}
