@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "\"order\"")
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,19 +18,19 @@ public class Order {
     private Date date;
 
     @ManyToOne(optional = false)
-    User user;
+    UserEntity userEntity;
 
     @ManyToOne(optional = false)
-    Product product;
+    ProductEntity product;
 
-    public Order() {
+    public OrderEntity() {
     }
 
-    public Order(Integer quantity, Float totalPrice, Date date, User user, Product product) {
+    public OrderEntity(Integer quantity, Float totalPrice, Date date, UserEntity userEntity, ProductEntity product) {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.date = date;
-        this.user = user;
+        this.userEntity = userEntity;
         this.product = product;
     }
 
@@ -58,19 +58,19 @@ public class Order {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUser() {
+        return userEntity;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
-    public Product getProduct() {
+    public ProductEntity getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductEntity product) {
         this.product = product;
     }
 }

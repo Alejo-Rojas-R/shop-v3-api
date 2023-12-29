@@ -7,18 +7,33 @@ public class ProductDTO {
     private String description;
     private Integer stock;
     private Long categoryId;
+    private String imageUrl;
 
     public ProductDTO() {
     }
-    public ProductDTO(String name, Float price, Float discount, String description, Integer stock, Long categoryId) {
+
+    public ProductDTO(String name, Float price, Float discount, String description, Integer stock, Long categoryId, String imageUrl) {
         this.name = name;
         this.price = price;
         this.discount = discount;
         this.description = description;
         this.stock = stock;
+        this.imageUrl = imageUrl;
         this.categoryId = categoryId;
     }
 
+    /*
+    // Obtener instancia DTO apartir de la entidad
+    public static ProductDTO fromEntityProduct(Product product) {
+        return new ProductDTO();
+    }
+
+    // Obtener instancia de la entidad apartir de la instancia de un DTO
+
+    public Product toEntity(){
+        return new Product(this.name, this.price, this.discount, this.description, this.stock, this.categoryId, this.images);
+    }
+*/
     public String getName() {
         return name;
     }
@@ -65,5 +80,13 @@ public class ProductDTO {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

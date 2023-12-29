@@ -1,9 +1,9 @@
 package com.practice.shopv3api.services;
 
 import com.practice.shopv3api.dtos.OrderDTO;
-import com.practice.shopv3api.entities.Order;
-import com.practice.shopv3api.entities.Product;
-import com.practice.shopv3api.entities.User;
+import com.practice.shopv3api.entities.OrderEntity;
+import com.practice.shopv3api.entities.ProductEntity;
+import com.practice.shopv3api.entities.UserEntity;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.OrderRepository;
 import com.practice.shopv3api.repositories.ProductRepository;
@@ -28,30 +28,30 @@ public class OrderService {
     }
 
     public void createOrder(OrderDTO dto) {
-        User user = this.userRepository.findById(dto.getIdUser()).orElseThrow(
+        UserEntity userEntity = this.userRepository.findById(dto.getIdUser()).orElseThrow(
                 () -> new ShopApiException("This user couldn't be found in the database"));
-        Product product = this.productRepository.findById(dto.getIdProduct()).orElseThrow(
+        ProductEntity product = this.productRepository.findById(dto.getIdProduct()).orElseThrow(
                 () -> new ShopApiException("This product couldn't be found in the database"));
-        Order newOrder = new Order(dto.getQuantity(), dto.getTotalPrice(), dto.getDate(), user, product);
-        this.orderRepository.save(newOrder);
+        OrderEntity newOrderEntity = new OrderEntity(dto.getQuantity(), dto.getTotalPrice(), dto.getDate(), userEntity, product);
+        this.orderRepository.save(newOrderEntity);
     }
 
-    public List<Order> readOrders() {
+    public List<OrderEntity> readOrders() {
         return StreamSupport.stream(this.orderRepository.findAll().spliterator(), false).toList();
     }
 
-    public Order readOrderById(Long orderId) {
+    public OrderEntity readOrderById(Long orderId) {
         return this.orderRepository.findById(orderId).orElseThrow(() -> new ShopApiException("This order couldn't be found in the database"));
     }
 
-    public Order updateOrder(Long orderId, OrderDTO orderBody) {
-        Order order = readOrderById(orderId);
+    public OrderEntity updateOrder(Long orderId, OrderDTO orderBody) {
+        OrderEntity orderEntity = readOrderById(orderId);
 
-        order.setDate(orderBody.getDate());
-        order.setQuantity(orderBody.getQuantity());
-        order.setTotalPrice(orderBody.getTotalPrice());
+        orderEntity.setDate(orderBody.getDate());
+        orderEntity.setQuantity(orderBody.getQuantity());
+        orderEntity.setTotalPrice(orderBody.getTotalPrice());
 
-        return this.orderRepository.save(order);
+        return this.orderRepository.save(orderEntity);
     }
 
     public void deleteOrder(Long orderId) {

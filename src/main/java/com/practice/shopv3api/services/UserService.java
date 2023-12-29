@@ -1,11 +1,11 @@
 package com.practice.shopv3api.services;
 
-import com.practice.shopv3api.dtos.AuthenticationDTO;
-import com.practice.shopv3api.dtos.SignUpDTO;
-import com.practice.shopv3api.entities.User;
+import com.practice.shopv3api.dtos.CreateUserDTO;
+import com.practice.shopv3api.entities.UserEntity;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,44 +13,45 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(SignUpDTO dto) {
+    public UserEntity createUser(CreateUserDTO dto) {
         boolean exists = this.userRepository.findByEmail(dto.getEmail()).isPresent();
         if (exists) {
             throw new ShopApiException("This email is already being used");
         }
-        User newUser = new User(dto.getName(),dto.getLastName(),dto.getEmail(), dto.getPassword(), dto.getPhone(), dto.getAddress(), false);
-        this.userRepository.save(newUser);
+
+        String encryptedPassword = passwordEncoder.encode(dto.getPassword());
+
+        UserEntity newUserEntity = new UserEntity(
+                dto.getName(),
+                dto.getLastName(),
+                dto.getEmail(),
+                encryptedPassword,
+                dto.getPhone(),
+                dto.getAddress(),
+                false);
+        return this.userRepository.save(newUserEntity);
     }
 
-    public List<User> readProducts() {
+    public List<UserEntity> readProducts() {
         return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).toList();
     }
 
-    public User readUserById(Long userId) {
+    public UserEntity readUserById(Long userId) {
         return this.userRepository.findById(userId).orElseThrow(() -> new ShopApiException("This product couldn't be found in the database"));
     }
 
-    public User readUserByEmail(String userEmail) {
+    public UserEntity readUserByEmail(String userEmail) {
         return this.userRepository.findByEmail(userEmail).orElseThrow(() -> new ShopApiException("This user couldn't be found in the database"));
-    }
-
-    public User updateUser(Long userId, SignUpDTO userBody) {
-        User user = readUserById(userId);
-
-        user.setName(userBody.getName());
-        user.setLastName(userBody.getLastName());
-        user.setPassword(userBody.getPassword());
-        user.setPhone(userBody.getPhone());
-        user.setAddress(userBody.getAddress());
-
-        return this.userRepository.save(user);
     }
 
     public void deleteUser(Long userId) {

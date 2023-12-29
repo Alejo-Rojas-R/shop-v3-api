@@ -1,15 +1,6 @@
-package com.practice.shopv3api.entities;
+package com.practice.shopv3api.dtos;
 
-import jakarta.persistence.*;
-
-import java.util.List;
-
-@Entity
-@Table
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CreateUserDTO {
     private String name;
     private String lastName;
     private String email;
@@ -18,13 +9,10 @@ public class User {
     private String address;
     private Boolean isAdmin;
 
-    @OneToMany(mappedBy = "user")
-    List<Order> order;
-
-    public User() {
+    public CreateUserDTO() {
     }
 
-    public User(String name, String lastName, String email, String password, Integer phone, String address, Boolean isAdmin) {
+    public CreateUserDTO(String name, String lastName, String email, String password, Integer phone, String address, Boolean isAdmin) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;

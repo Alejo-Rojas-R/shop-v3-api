@@ -1,35 +1,49 @@
 package com.practice.shopv3api.entities;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
 @Entity
-@Table
-public class Product {
+@Table(name = "product")
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Float price;
     private Float discount;
+    @Column(columnDefinition = "TEXT")
     private String description;
+    @NonNull
     private Integer stock;
-    @OneToMany(mappedBy = "product")
-    List<Order> order;
-    @OneToMany(mappedBy = "product")
-    List<Image> image;
-    @ManyToOne(optional = false)
-    Category category;
+    private String imageUrl;
 
-    public Product() {
+    @OneToMany(mappedBy = "product")
+    List<OrderEntity> orderEntity;
+    @OneToMany(mappedBy = "product")
+    List<ImageEntity> imageEntities;
+    @ManyToOne(optional = false)
+    CategoryEntity categoryEntity;
+    @OneToMany(mappedBy = "product")
+    List<ReviewEntity> reviewEntity;
+
+    public ProductEntity() {
     }
 
-    public Product(String name, Float price, Float discount, String description, Integer stock, Category category) {
+    public ProductEntity(String name, Float price, Float discount, String description, Integer stock, String imageUrl, CategoryEntity categoryEntity) {
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.category = category;
+        this.categoryEntity = categoryEntity;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.stock = stock;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -56,12 +70,12 @@ public class Product {
         this.discount = discount;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryEntity getCategory() {
+        return categoryEntity;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
     }
 
     public String getDescription() {
@@ -78,5 +92,17 @@ public class Product {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public List<ImageEntity> getImages() {
+        return imageEntities;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

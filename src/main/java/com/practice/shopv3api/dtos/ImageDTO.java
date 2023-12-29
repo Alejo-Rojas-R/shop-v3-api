@@ -3,15 +3,15 @@ package com.practice.shopv3api.dtos;
 public class ImageDTO {
     private String url;
     private String description;
-    private Long idProduct;
+    private Long productId;
 
     public ImageDTO() {
     }
 
-    public ImageDTO(String url, String description, Long idProduct) {
+    public ImageDTO(String url, String description, Long productId) {
         this.url = url;
         this.description = description;
-        this.idProduct = idProduct;
+        this.productId = productId;
     }
 
     public String getUrl() {
@@ -30,11 +30,11 @@ public class ImageDTO {
         this.description = description;
     }
 
-    public Long getIdProduct() {
-        return idProduct;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setIdProduct(Long idProduct) {
-        this.idProduct = idProduct;
+    public void setProductId(Long idProduct) {
+        this.productId = idProduct;
     }
 }

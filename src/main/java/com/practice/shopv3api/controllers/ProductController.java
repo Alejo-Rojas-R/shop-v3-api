@@ -1,7 +1,7 @@
 package com.practice.shopv3api.controllers;
 
 import com.practice.shopv3api.dtos.ProductDTO;
-import com.practice.shopv3api.entities.Product;
+import com.practice.shopv3api.entities.ProductEntity;
 import com.practice.shopv3api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/shop-v3/products")
+@RequestMapping("private/products")
 public class ProductController {
     private final ProductService service;
 
@@ -24,21 +24,21 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<Product> readProducts(){
+    public List<ProductEntity> readProducts(){
         return service.readProducts();
     }
 
-    @GetMapping("/product/{id}")
-    public Product readProductById(@PathVariable Long id){
+    @GetMapping("{id}")
+    public ProductEntity readProductById(@PathVariable Long id){
         return service.readProductById(id);
     }
 
-    @PutMapping("/product/{id}")
-    public Product updateProduct(@PathVariable("id") Long id, ProductDTO dto){
+    @PutMapping("{id}")
+    public ProductEntity updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO dto){
         return service.updateProduct(id, dto);
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("{id}")
     public void deleteProduct(@PathVariable("id") Long id){
         service.deleteProduct(id);
     }

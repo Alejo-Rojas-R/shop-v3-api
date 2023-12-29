@@ -3,8 +3,8 @@ package com.practice.shopv3api.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table
-public class Image {
+@Table(name = "image")
+public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,12 +12,12 @@ public class Image {
     private String description;
 
     @ManyToOne(optional = false)
-    Product product;
+    ProductEntity product;
 
-    public Image() {
+    public ImageEntity() {
     }
 
-    public Image(String url, String description, Product product) {
+    public ImageEntity(String url, String description, ProductEntity product) {
         this.url = url;
         this.description = description;
         this.product = product;
@@ -39,11 +39,7 @@ public class Image {
         this.description = description;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
+    public void setProduct(ProductEntity product) {
         this.product = product;
     }
 }

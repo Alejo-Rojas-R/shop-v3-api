@@ -5,19 +5,19 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
-public class Category {
+@Table(name = "category")
+public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    @OneToMany(mappedBy = "categoryEntity")
+    private List<ProductEntity> products;
 
-    public Category() {
+    public CategoryEntity() {
     }
 
-    public Category(String name) {
+    public CategoryEntity(String name) {
         this.name = name;
     }
 

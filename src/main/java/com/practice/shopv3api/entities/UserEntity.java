@@ -1,23 +1,39 @@
-package com.practice.shopv3api.dtos;
+package com.practice.shopv3api.entities;
 
-public class SignUpDTO {
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "\"user\"")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String lastName;
     private String email;
     private String password;
     private Integer phone;
     private String address;
+    private Boolean isAdmin;
 
-    public SignUpDTO() {
+    @OneToMany(mappedBy = "userEntity")
+    List<OrderEntity> orderEntity;
+    @OneToMany(mappedBy = "userEntity")
+    List<ReviewEntity> reviewEntity;
+
+    public UserEntity() {
     }
 
-    public SignUpDTO(String name, String lastName, String email, String password, Integer phone, String address) {
+    public UserEntity(String name, String lastName, String email, String password, Integer phone, String address, Boolean isAdmin) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.address = address;
+        this.isAdmin = isAdmin;
     }
 
     public String getName() {
@@ -66,5 +82,13 @@ public class SignUpDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }

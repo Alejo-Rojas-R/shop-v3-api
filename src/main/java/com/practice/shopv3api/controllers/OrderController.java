@@ -1,7 +1,7 @@
 package com.practice.shopv3api.controllers;
 
 import com.practice.shopv3api.dtos.OrderDTO;
-import com.practice.shopv3api.entities.Order;
+import com.practice.shopv3api.entities.OrderEntity;
 import com.practice.shopv3api.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/shop-v3/orders")
+@RequestMapping("private/orders")
 public class OrderController {
     private final OrderService service;
 
@@ -24,21 +24,21 @@ public class OrderController {
     }
 
     @GetMapping()
-    public List<Order> readOrders(){
+    public List<OrderEntity> readOrders(){
         return service.readOrders();
     }
 
-    @GetMapping("/order/{id}")
-    public Order readOrderById(@PathVariable Long id){
+    @GetMapping("{id}")
+    public OrderEntity readOrderById(@PathVariable Long id){
         return service.readOrderById(id);
     }
 
-    @PutMapping("/order/{id}")
-    public Order updateOrder(@PathVariable("id") Long id, OrderDTO dto){
+    @PutMapping("{id}")
+    public OrderEntity updateOrder(@PathVariable("id") Long id, OrderDTO dto){
         return service.updateOrder(id, dto);
     }
 
-    @DeleteMapping("/order/{id}")
+    @DeleteMapping("{id}")
     public void deleteOrder(@PathVariable("id") Long id){
         service.deleteOrder(id);
     }
