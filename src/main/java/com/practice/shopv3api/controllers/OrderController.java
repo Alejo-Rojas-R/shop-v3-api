@@ -4,12 +4,13 @@ import com.practice.shopv3api.dtos.OrderDTO;
 import com.practice.shopv3api.entities.OrderEntity;
 import com.practice.shopv3api.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("private/orders")
+@RequestMapping("orders")
 public class OrderController {
     private final OrderService service;
 
@@ -19,6 +20,7 @@ public class OrderController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('USER')")
     public void createOrder(@RequestBody OrderDTO dto) {
         this.service.createOrder(dto);
     }
@@ -34,11 +36,13 @@ public class OrderController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public OrderEntity updateOrder(@PathVariable("id") Long id, OrderDTO dto){
         return service.updateOrder(id, dto);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteOrder(@PathVariable("id") Long id){
         service.deleteOrder(id);
     }

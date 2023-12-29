@@ -1,17 +1,22 @@
 package com.practice.shopv3api.controllers;
 
+import com.practice.shopv3api.dtos.CreateUserDTO;
+import com.practice.shopv3api.entities.UserEntity;
+import com.practice.shopv3api.security.CustomUserDetailsService;
 import com.practice.shopv3api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("private/users")
+@RequestMapping("users")
 public class UserController {
-    private final UserService service;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     /*
@@ -22,17 +27,36 @@ public class UserController {
 
     @GetMapping("{id}")
     public User readUserById(@PathVariable Long id){
-        return rvice.readUserById(id);
+        return service.readUserById(id);
     }
 
     @PutMapping("{id}")
     public User updateUser(@PathVariable("id") Long id, SignUpDTO dto){
         return service.updateUser(id, dto);
     }
+
+    @GetMapping("login")
+    public UserDetails readUserByCredentials(@RequestBody String email){
+        return userDetailsService.loadUserByUsername(email);
+    }
     */
+    @PostMapping("signup")
+    public UserEntity createUser(@RequestBody CreateUserDTO dto) {
+        return userService.createUser(dto);
+    }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@PathVariable("id") Long id){
-        service.deleteUser(id);
+        userService.deleteUser(id);
+    }
+
+    @GetMapping("validate")
+    public String validateAuthentication(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            return "You are logged in.";
+        } else {
+            return "You are not logged in!";
+        }
     }
 }
