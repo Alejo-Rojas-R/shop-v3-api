@@ -8,6 +8,9 @@ import com.practice.shopv3api.repositories.CategoryRepository;
 import com.practice.shopv3api.repositories.ImageRepository;
 import com.practice.shopv3api.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +42,8 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> readProductsByCategory(Integer categoryId) {
-        List<Product> products = StreamSupport.stream(this.productRepository.findByCategory_Id(categoryId).spliterator(), false).toList();
+    public List<Product> readProductsByCategory(Integer categoryId, Pageable pageable) {
+        List<Product> products = StreamSupport.stream(this.productRepository.findByCategory_Id(categoryId, pageable).spliterator(), false).toList();
 
         return products;
     }
@@ -79,5 +82,11 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         readProductById(productId);
         this.productRepository.deleteById(productId);
+    }
+
+    public List<Product> readProductsBySearch(String query, Pageable pageable) {
+        List<Product> products = StreamSupport.stream(this.productRepository.findByNameLikeOrDescriptionLike(query, query, pageable).spliterator(), false).toList();
+
+        return products;
     }
 }

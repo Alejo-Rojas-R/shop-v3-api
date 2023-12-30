@@ -4,6 +4,7 @@ import com.practice.shopv3api.dtos.ProductDTO;
 import com.practice.shopv3api.entities.Product;
 import com.practice.shopv3api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +31,19 @@ public class ProductController {
         return service.readProducts();
     }
 
+    @GetMapping("search/{query}")
+    public List<Product> readProductsBySearch(@PathVariable String query, Pageable pageable){
+        return service.readProductsBySearch(query, pageable);
+    }
+
     @GetMapping("{id}")
     public Product readProductById(@PathVariable Long id){
         return service.readProductById(id);
     }
 
     @GetMapping("category/{categoryId}")
-    public List<Product> readProductsByCategory(@PathVariable Integer categoryId){
-        return service.readProductsByCategory(categoryId);
+    public List<Product> readProductsByCategory(@PathVariable Integer categoryId, Pageable pageable){
+        return service.readProductsByCategory(categoryId, pageable);
     }
 
     @PutMapping("{id}")
