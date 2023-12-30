@@ -1,9 +1,9 @@
 package com.practice.shopv3api.services;
 
 import com.practice.shopv3api.dtos.ReviewDTO;
-import com.practice.shopv3api.entities.ProductEntity;
-import com.practice.shopv3api.entities.ReviewEntity;
-import com.practice.shopv3api.entities.UserEntity;
+import com.practice.shopv3api.entities.Product;
+import com.practice.shopv3api.entities.Review;
+import com.practice.shopv3api.entities.User;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.ProductRepository;
 import com.practice.shopv3api.repositories.ReviewRepository;
@@ -24,11 +24,11 @@ public class ReviewService {
         this.userRepository = userRepository;
     }
 
-    public ReviewEntity createReview(ReviewDTO dto) {
-        ProductEntity product = this.productRepository.findById(dto.getIdProduct()).orElseThrow(() -> new ShopApiException("Couldn't find this product id in the database"));
-        UserEntity userEntity = this.userRepository.findById(dto.getIdProduct()).orElseThrow(() -> new ShopApiException("Couldn't find this user id in the database"));
+    public Review createReview(ReviewDTO dto) {
+        Product product = this.productRepository.findById(dto.getIdProduct()).orElseThrow(() -> new ShopApiException("Couldn't find this product id in the database"));
+        User user = this.userRepository.findById(dto.getIdProduct()).orElseThrow(() -> new ShopApiException("Couldn't find this user id in the database"));
 
-        ReviewEntity reviewEntity = new ReviewEntity(dto.getScore(), dto.getDescription(), dto.getDate(), product, userEntity);
-        return this.reviewRepository.save(reviewEntity);
+        Review review = new Review(dto.getScore(), dto.getDescription(), dto.getDate(), product, user);
+        return this.reviewRepository.save(review);
     }
 }

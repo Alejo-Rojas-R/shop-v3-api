@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "\"order\"")
-public class OrderEntity {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,20 +17,20 @@ public class OrderEntity {
 
     private Date date;
 
-    @ManyToOne(optional = false)
-    UserEntity userEntity;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    User user;
 
-    @ManyToOne(optional = false)
-    ProductEntity product;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    Product product;
 
-    public OrderEntity() {
+    public Order() {
     }
 
-    public OrderEntity(Integer quantity, Float totalPrice, Date date, UserEntity userEntity, ProductEntity product) {
+    public Order(Integer quantity, Float totalPrice, Date date, User user, Product product) {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.date = date;
-        this.userEntity = userEntity;
+        this.user = user;
         this.product = product;
     }
 
@@ -58,19 +58,19 @@ public class OrderEntity {
         this.date = date;
     }
 
-    public UserEntity getUser() {
-        return userEntity;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public ProductEntity getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(ProductEntity product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 }

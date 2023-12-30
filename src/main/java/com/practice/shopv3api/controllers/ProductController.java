@@ -1,7 +1,7 @@
 package com.practice.shopv3api.controllers;
 
 import com.practice.shopv3api.dtos.ProductDTO;
-import com.practice.shopv3api.entities.ProductEntity;
+import com.practice.shopv3api.entities.Product;
 import com.practice.shopv3api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,18 +26,23 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<ProductEntity> readProducts(){
+    public List<Product> readProducts(){
         return service.readProducts();
     }
 
     @GetMapping("{id}")
-    public ProductEntity readProductById(@PathVariable Long id){
+    public Product readProductById(@PathVariable Long id){
         return service.readProductById(id);
+    }
+
+    @GetMapping("category/{categoryId}")
+    public List<Product> readProductsByCategory(@PathVariable Integer categoryId){
+        return service.readProductsByCategory(categoryId);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ProductEntity updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO dto){
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO dto){
         return service.updateProduct(id, dto);
     }
 

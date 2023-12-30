@@ -1,7 +1,7 @@
 package com.practice.shopv3api.services;
 
 import com.practice.shopv3api.dtos.CreateUserDTO;
-import com.practice.shopv3api.entities.UserEntity;
+import com.practice.shopv3api.entities.User;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserEntity createUser(CreateUserDTO dto) {
+    public User createUser(CreateUserDTO dto) {
         boolean exists = this.userRepository.findByEmail(dto.getEmail()).isPresent();
         if (exists) {
             throw new ShopApiException("This email is already being used");
@@ -31,7 +31,7 @@ public class UserService {
 
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
 
-        UserEntity newUserEntity = new UserEntity(
+        User newUser = new User(
                 dto.getName(),
                 dto.getLastName(),
                 dto.getEmail(),
@@ -39,18 +39,18 @@ public class UserService {
                 dto.getPhone(),
                 dto.getAddress(),
                 false);
-        return this.userRepository.save(newUserEntity);
+        return this.userRepository.save(newUser);
     }
 
-    public List<UserEntity> readProducts() {
+    public List<User> readProducts() {
         return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).toList();
     }
 
-    public UserEntity readUserById(Long userId) {
+    public User readUserById(Long userId) {
         return this.userRepository.findById(userId).orElseThrow(() -> new ShopApiException("This product couldn't be found in the database"));
     }
 
-    public UserEntity readUserByEmail(String userEmail) {
+    public User readUserByEmail(String userEmail) {
         return this.userRepository.findByEmail(userEmail).orElseThrow(() -> new ShopApiException("This user couldn't be found in the database"));
     }
 

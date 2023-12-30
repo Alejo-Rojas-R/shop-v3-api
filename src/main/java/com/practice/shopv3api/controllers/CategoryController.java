@@ -1,7 +1,7 @@
 package com.practice.shopv3api.controllers;
 
 import com.practice.shopv3api.dtos.CategoryDTO;
-import com.practice.shopv3api.entities.CategoryEntity;
+import com.practice.shopv3api.entities.Category;
 import com.practice.shopv3api.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,18 +32,18 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public List<CategoryEntity> readCategories(){
+    public List<Category> readCategories(){
         return service.readCategories();
     }
 
     @GetMapping("{id}")
-    public CategoryEntity readCategoryById(@PathVariable Long id){
+    public Category readCategoryById(@PathVariable Long id){
         return service.readCategoryById(id);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public CategoryEntity updateCategory(@PathVariable("id") Long id, CategoryDTO dto){
+    public Category updateCategory(@PathVariable("id") Long id, CategoryDTO dto){
         return service.updateCategory(id, dto);
     }
 }

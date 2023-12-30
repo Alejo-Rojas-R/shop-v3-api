@@ -1,6 +1,6 @@
 package com.practice.shopv3api.security;
 
-import com.practice.shopv3api.entities.UserEntity;
+import com.practice.shopv3api.entities.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,8 +23,8 @@ import java.util.List;
 public class SecurityConfiguration {
 
     @Bean
-    public UserEntity userBean() {
-        return new UserEntity();
+    public User userBean() {
+        return new User();
     }
 
     @Bean

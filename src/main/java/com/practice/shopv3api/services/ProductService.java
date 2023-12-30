@@ -1,8 +1,8 @@
 package com.practice.shopv3api.services;
 
 import com.practice.shopv3api.dtos.ProductDTO;
-import com.practice.shopv3api.entities.CategoryEntity;
-import com.practice.shopv3api.entities.ProductEntity;
+import com.practice.shopv3api.entities.Category;
+import com.practice.shopv3api.entities.Product;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.CategoryRepository;
 import com.practice.shopv3api.repositories.ImageRepository;
@@ -27,26 +27,30 @@ public class ProductService {
     }
 
     public void createProduct(ProductDTO dto) {
-        CategoryEntity categoryEntity = this.categoryRepository.findById(dto.getCategoryId()).orElseThrow(
+        Category category = this.categoryRepository.findById(dto.getCategoryId()).orElseThrow(
                 () -> new ShopApiException("This product couldn't be found in the database"));
-        ProductEntity newProduct = new ProductEntity(dto.getName(), dto.getPrice(), dto.getDiscount(), dto.getDescription(), dto.getStock(), dto.getImageUrl(), categoryEntity);
+        Product newProduct = new Product(dto.getName(), dto.getPrice(), dto.getDiscount(), dto.getDescription(), dto.getStock(), dto.getImageUrl(), category);
         this.productRepository.save(newProduct);
     }
 
-    public List<ProductEntity> readProducts() {
-        //List<Image> images = imageRepository.findByProductId();
-        List<ProductEntity> products = StreamSupport.stream(this.productRepository.findAll().spliterator(), false).toList();
-        //List<ProductDTO> productsDTO =  products.stream().map(product -> ProductDTO.fromEntityProduct(product)).toList();
+    public List<Product> readProducts() {
+        List<Product> products = StreamSupport.stream(this.productRepository.findAll().spliterator(), false).toList();
 
         return products;
     }
 
-    public ProductEntity readProductById(Long productId) {
+    public List<Product> readProductsByCategory(Integer categoryId) {
+        List<Product> products = StreamSupport.stream(this.productRepository.findByCategory_Id(categoryId).spliterator(), false).toList();
+
+        return products;
+    }
+
+    public Product readProductById(Long productId) {
         return this.productRepository.findById(productId).orElseThrow(() -> new ShopApiException("This product was not found in the database"));
     }
 
-    public ProductEntity updateProduct(Long productId, ProductDTO productBody) {
-        ProductEntity product = readProductById(productId);
+    public Product updateProduct(Long productId, ProductDTO productBody) {
+        Product product = readProductById(productId);
 
         if(productBody.getName() != null) {
             product.setName(productBody.getName());
@@ -58,9 +62,9 @@ public class ProductService {
             product.setPrice(productBody.getPrice());
         }
         if(productBody.getCategoryId() != null) {
-            CategoryEntity categoryEntity = this.categoryRepository.findById(productBody.getCategoryId()).orElseThrow(() -> new ShopApiException("This category was not found in the database"));
+            Category category = this.categoryRepository.findById(productBody.getCategoryId()).orElseThrow(() -> new ShopApiException("This category was not found in the database"));
 
-            product.setCategory(categoryEntity);
+            product.setCategory(category);
         }
         if(productBody.getDescription() != null) {
             product.setDescription(productBody.getDescription());

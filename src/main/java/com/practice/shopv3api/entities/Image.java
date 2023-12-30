@@ -4,20 +4,20 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "image")
-public class ImageEntity {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
     private String description;
 
-    @ManyToOne(optional = false)
-    ProductEntity product;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    Product product;
 
-    public ImageEntity() {
+    public Image() {
     }
 
-    public ImageEntity(String url, String description, ProductEntity product) {
+    public Image(String url, String description, Product product) {
         this.url = url;
         this.description = description;
         this.product = product;
@@ -39,7 +39,7 @@ public class ImageEntity {
         this.description = description;
     }
 
-    public void setProduct(ProductEntity product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 }

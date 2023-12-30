@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product")
-public class ProductEntity {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,22 +21,22 @@ public class ProductEntity {
     private String imageUrl;
 
     @OneToMany(mappedBy = "product")
-    List<OrderEntity> orderEntity;
+    List<Order> order;
     @OneToMany(mappedBy = "product")
-    List<ImageEntity> imageEntities;
-    @ManyToOne(optional = false)
-    CategoryEntity categoryEntity;
+    List<Image> images;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    Category category;
     @OneToMany(mappedBy = "product")
-    List<ReviewEntity> reviewEntity;
+    List<Review> review;
 
-    public ProductEntity() {
+    public Product() {
     }
 
-    public ProductEntity(String name, Float price, Float discount, String description, Integer stock, String imageUrl, CategoryEntity categoryEntity) {
+    public Product(String name, Float price, Float discount, String description, Integer stock, String imageUrl, Category category) {
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.categoryEntity = categoryEntity;
+        this.category = category;
         this.description = description;
         this.imageUrl = imageUrl;
         this.stock = stock;
@@ -70,12 +70,12 @@ public class ProductEntity {
         this.discount = discount;
     }
 
-    public CategoryEntity getCategory() {
-        return categoryEntity;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getDescription() {
@@ -94,8 +94,8 @@ public class ProductEntity {
         this.stock = stock;
     }
 
-    public List<ImageEntity> getImages() {
-        return imageEntities;
+    public List<Image> getImages() {
+        return images;
     }
 
     public String getImageUrl() {

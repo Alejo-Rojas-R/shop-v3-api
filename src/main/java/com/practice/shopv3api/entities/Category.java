@@ -6,18 +6,18 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
-public class CategoryEntity {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "categoryEntity")
-    private List<ProductEntity> products;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
-    public CategoryEntity() {
+    public Category() {
     }
 
-    public CategoryEntity(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
@@ -27,5 +27,9 @@ public class CategoryEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -1,6 +1,6 @@
 package com.practice.shopv3api.security;
 
-import com.practice.shopv3api.entities.UserEntity;
+import com.practice.shopv3api.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,25 +12,25 @@ import java.util.Collections;
 @Component
 public class CustomUserDetails implements UserDetails {
 
-    private final UserEntity userEntity;
+    private final User user;
 
-    public CustomUserDetails(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public CustomUserDetails(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(userEntity.getAdmin() ? "ADMIN" : "USER"));
+        return Collections.singleton(new SimpleGrantedAuthority(user.getAdmin() ? "ADMIN" : "USER"));
     }
 
     @Override
     public String getPassword() {
-        return userEntity.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userEntity.getEmail();
+        return user.getEmail();
     }
 
     @Override

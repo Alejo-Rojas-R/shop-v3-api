@@ -1,8 +1,7 @@
 package com.practice.shopv3api.controllers;
 
 import com.practice.shopv3api.dtos.CreateUserDTO;
-import com.practice.shopv3api.entities.UserEntity;
-import com.practice.shopv3api.security.CustomUserDetailsService;
+import com.practice.shopv3api.entities.User;
 import com.practice.shopv3api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +40,7 @@ public class UserController {
     }
     */
     @PostMapping("signup")
-    public UserEntity createUser(@RequestBody CreateUserDTO dto) {
+    public User createUser(@RequestBody CreateUserDTO dto) {
         return userService.createUser(dto);
     }
 

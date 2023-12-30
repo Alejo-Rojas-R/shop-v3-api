@@ -1,6 +1,6 @@
 package com.practice.shopv3api.repositories;
 
-import com.practice.shopv3api.entities.ImageEntity;
+import com.practice.shopv3api.entities.Image;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ImageRepository extends CrudRepository<ImageEntity, Long> {
+public interface ImageRepository extends CrudRepository<Image, Long> {
     @Query
-    List<ImageEntity> findByProductId(Long id);
+    List<Image> findByProductId(Long id);
 
     @Query
-    List<ImageEntity> findImagesByProductId(Long id);
+    List<Image> findImagesByProductId(Long id);
 }

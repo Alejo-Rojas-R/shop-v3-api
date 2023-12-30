@@ -1,7 +1,7 @@
 package com.practice.shopv3api.controllers;
 
 import com.practice.shopv3api.dtos.OrderDTO;
-import com.practice.shopv3api.entities.OrderEntity;
+import com.practice.shopv3api.entities.Order;
 import com.practice.shopv3api.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,18 +26,18 @@ public class OrderController {
     }
 
     @GetMapping()
-    public List<OrderEntity> readOrders(){
+    public List<Order> readOrders(){
         return service.readOrders();
     }
 
     @GetMapping("{id}")
-    public OrderEntity readOrderById(@PathVariable Long id){
+    public Order readOrderById(@PathVariable Long id){
         return service.readOrderById(id);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public OrderEntity updateOrder(@PathVariable("id") Long id, OrderDTO dto){
+    public Order updateOrder(@PathVariable("id") Long id, OrderDTO dto){
         return service.updateOrder(id, dto);
     }
 

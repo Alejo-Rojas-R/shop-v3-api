@@ -6,27 +6,27 @@ import java.util.Date;
 
 @Entity
 @Table(name = "review")
-public class ReviewEntity {
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer score;
     private String description;
     private Date date;
-    @ManyToOne(optional = false)
-    ProductEntity product;
-    @ManyToOne(optional = false)
-    UserEntity userEntity;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    Product product;
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+    User user;
 
-    public ReviewEntity() {
+    public Review() {
     }
 
-    public ReviewEntity(Integer score, String description, Date date, ProductEntity product, UserEntity userEntity) {
+    public Review(Integer score, String description, Date date, Product product, User user) {
         this.score = score;
         this.description = description;
         this.date = date;
         this.product = product;
-        this.userEntity = userEntity;
+        this.user = user;
     }
 
     public Integer getScore() {
@@ -53,19 +53,19 @@ public class ReviewEntity {
         this.date = date;
     }
 
-    public ProductEntity getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(ProductEntity product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
-    public UserEntity getUser() {
-        return userEntity;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

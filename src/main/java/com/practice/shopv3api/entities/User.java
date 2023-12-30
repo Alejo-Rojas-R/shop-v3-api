@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "\"user\"")
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,15 +18,15 @@ public class UserEntity {
     private String address;
     private Boolean isAdmin;
 
-    @OneToMany(mappedBy = "userEntity")
-    List<OrderEntity> orderEntity;
-    @OneToMany(mappedBy = "userEntity")
-    List<ReviewEntity> reviewEntity;
+    @OneToMany(mappedBy = "user")
+    List<Order> order;
+    @OneToMany(mappedBy = "user")
+    List<Review> review;
 
-    public UserEntity() {
+    public User() {
     }
 
-    public UserEntity(String name, String lastName, String email, String password, Integer phone, String address, Boolean isAdmin) {
+    public User(String name, String lastName, String email, String password, Integer phone, String address, Boolean isAdmin) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
