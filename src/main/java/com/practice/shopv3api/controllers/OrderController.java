@@ -26,6 +26,7 @@ public class OrderController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Order> readOrders(){
         return service.readOrders();
     }
