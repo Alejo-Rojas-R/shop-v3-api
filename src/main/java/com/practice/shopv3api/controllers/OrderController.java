@@ -5,6 +5,9 @@ import com.practice.shopv3api.entities.Order;
 import com.practice.shopv3api.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,5 +49,14 @@ public class OrderController {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteOrder(@PathVariable("id") Long id){
         service.deleteOrder(id);
+    }
+
+    @PostMapping("by-user")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public List<Order> readOrderByUserEmail(@RequestParam("email") String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authenticated user: " + authentication.getName());
+
+        return service.readOrderByUserEmail(email);
     }
 }

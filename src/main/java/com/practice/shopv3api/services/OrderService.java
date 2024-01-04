@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class OrderService {
     OrderRepository orderRepository;
@@ -42,6 +44,11 @@ public class OrderService {
 
     public Order readOrderById(Long orderId) {
         return this.orderRepository.findById(orderId).orElseThrow(() -> new ShopApiException("This order couldn't be found in the database"));
+    }
+
+    public List<Order> readOrderByUserEmail(String email) {
+        List<Order> orders = this.orderRepository.findByUserEmail(email).stream().toList();
+        return orders;
     }
 
     public Order updateOrder(Long orderId, OrderDTO orderBody) {
