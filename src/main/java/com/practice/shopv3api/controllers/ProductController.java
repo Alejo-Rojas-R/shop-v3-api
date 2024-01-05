@@ -20,12 +20,6 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping()
-    @PreAuthorize("hasRole('ADMIN')")
-    public void createProduct(@RequestBody ProductDTO dto) {
-        this.service.createProduct(dto);
-    }
-
     @GetMapping()
     public List<Product> readProducts(){
         return service.readProducts();
@@ -46,14 +40,20 @@ public class ProductController {
         return service.readProductsByCategory(categoryId, pageable);
     }
 
+    @PostMapping()
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public void createProduct(@RequestBody ProductDTO dto) {
+        this.service.createProduct(dto);
+    }
+
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Product updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO dto){
         return service.updateProduct(id, dto);
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deleteProduct(@PathVariable("id") Long id){
         service.deleteProduct(id);
     }

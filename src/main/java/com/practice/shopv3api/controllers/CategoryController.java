@@ -19,18 +19,6 @@ public class CategoryController {
         this.service = service;
     }
 
-    @PostMapping()
-    @PreAuthorize("hasRole('ADMIN')")
-    public void createCategory(@RequestBody CategoryDTO dto) {
-        this.service.createCategory(dto);
-    }
-
-    @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void deleteCategory(@PathVariable("id") Long id) {
-        this.service.deleteCategory(id);
-    }
-
     @GetMapping()
     public List<Category> readCategories(){
         return service.readCategories();
@@ -41,8 +29,20 @@ public class CategoryController {
         return service.readCategoryById(id);
     }
 
+    @PostMapping()
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public void createCategory(@RequestBody CategoryDTO dto) {
+        this.service.createCategory(dto);
+    }
+
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public void deleteCategory(@PathVariable("id") Long id) {
+        this.service.deleteCategory(id);
+    }
+
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Category updateCategory(@PathVariable("id") Long id, CategoryDTO dto){
         return service.updateCategory(id, dto);
     }

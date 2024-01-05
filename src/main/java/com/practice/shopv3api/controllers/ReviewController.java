@@ -20,7 +20,7 @@ public class ReviewController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public void createReview(@RequestBody ReviewDTO dto) {
         this.service.createReview(dto);
     }

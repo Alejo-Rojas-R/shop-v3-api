@@ -23,13 +23,13 @@ public class OrderController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void createOrder(@RequestBody OrderDTO dto) {
         this.service.createOrder(dto);
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<Order> readOrders(){
         return service.readOrders();
     }
@@ -40,23 +40,20 @@ public class OrderController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Order updateOrder(@PathVariable("id") Long id, OrderDTO dto){
         return service.updateOrder(id, dto);
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deleteOrder(@PathVariable("id") Long id){
         service.deleteOrder(id);
     }
 
     @PostMapping("by-user")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<Order> readOrderByUserEmail(@RequestParam("email") String email) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authenticated user: " + authentication.getName());
-
         return service.readOrderByUserEmail(email);
     }
 }

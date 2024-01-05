@@ -25,13 +25,13 @@ public class ImageController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void createImage(@RequestBody ImageDTO dto) {
         this.service.create(dto);
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deleteImage(@PathVariable("id") Long id) {
         this.service.delete(id);
     }
