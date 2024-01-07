@@ -5,6 +5,7 @@ import com.practice.shopv3api.entities.Category;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class CategoryService {
     public Category createCategory(CategoryDTO dto) {
         boolean exists = this.categoryRepository.findByName(dto.getName()).isPresent();
         if (exists) {
-            throw new ShopApiException("This category aleady exists in the database", HttpStatusCode.valueOf(400));
+            throw new ShopApiException("This category aleady exists in the database", HttpStatus.UNAUTHORIZED);
         }
         Category newCategory = new Category(dto.getName());
         return this.categoryRepository.save(newCategory);
@@ -34,11 +35,13 @@ public class CategoryService {
     }
 
     public Category readCategoryById(Long categoryId) {
-        return this.categoryRepository.findById(categoryId).orElseThrow(() -> new ShopApiException("This category couldn't be found in the database"));
+        return this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ShopApiException("This category couldn't be found in the database", HttpStatus.NOT_FOUND));
     }
 
     public Category updateCategory(Long categoryId, CategoryDTO categoryBody) {
-        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ShopApiException("This category couldn't be found in the database"));
+        Category category = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ShopApiException("This category couldn't be found in the database", HttpStatus.NOT_FOUND));
 
         category.setName(categoryBody.getName());
 
@@ -46,7 +49,7 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
-        this.categoryRepository.findById(id).orElseThrow(()->new ShopApiException("This category id doesn't exist in the database"));
+        this.readCategoryById(id);
         this.categoryRepository.deleteById(id);
     }
 }

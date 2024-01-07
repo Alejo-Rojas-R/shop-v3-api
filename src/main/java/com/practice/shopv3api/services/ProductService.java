@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,11 +30,11 @@ public class ProductService {
         this.imageRepository = imageRepository;
     }
 
-    public void createProduct(ProductDTO dto) {
+    public Product createProduct(ProductDTO dto) {
         Category category = this.categoryRepository.findById(dto.getCategoryId()).orElseThrow(
-                () -> new ShopApiException("This product couldn't be found in the database"));
+                () -> new ShopApiException("This category couldn't be found in the database", HttpStatus.NOT_FOUND));
         Product newProduct = new Product(dto.getName(), dto.getPrice(), dto.getDiscount(), dto.getDescription(), dto.getStock(), dto.getImageUrl(), category);
-        this.productRepository.save(newProduct);
+        return this.productRepository.save(newProduct);
     }
 
     public List<Product> readProducts() {

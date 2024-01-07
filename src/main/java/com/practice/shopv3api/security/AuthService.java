@@ -7,8 +7,11 @@ import com.practice.shopv3api.entities.Role;
 import com.practice.shopv3api.entities.User;
 import com.practice.shopv3api.exceptions.ShopApiException;
 import com.practice.shopv3api.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +34,7 @@ public class AuthService {
     public AuthenticationResponseDTO register (RegisterRequestDTO request) {
         boolean exists = this.userRepository.findByEmail(request.getEmail()).isPresent();
         if (exists) {
-            throw new ShopApiException("This email is already being used");
+            throw new ShopApiException("This email is already being used", HttpStatus.UNAUTHORIZED);
         }
 
         String encryptedPassword = passwordEncoder.encode(request.getPassword());
@@ -57,14 +60,22 @@ public class AuthService {
     }
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
-        User user = this.userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("This user is not registered in the application"));
+        User user = this.userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ShopApiException(
+                        "This user is not registered in the application",
+                        new UsernameNotFoundException("User not found"),
+                        HttpStatus.UNAUTHORIZED));
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (AuthenticationException e) {
+            throw new ShopApiException("Invalid credentials", e, HttpStatus.NOT_FOUND);
+        }
 
         var jwtToken = jwtService.generateToken(user);
 

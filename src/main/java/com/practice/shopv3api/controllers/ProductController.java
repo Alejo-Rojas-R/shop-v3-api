@@ -5,6 +5,7 @@ import com.practice.shopv3api.entities.Product;
 import com.practice.shopv3api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,8 @@ public class ProductController {
 
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public void createProduct(@RequestBody ProductDTO dto) {
-        this.service.createProduct(dto);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO dto) {
+        return ResponseEntity.ok(this.service.createProduct(dto));
     }
 
     @PutMapping("{id}")

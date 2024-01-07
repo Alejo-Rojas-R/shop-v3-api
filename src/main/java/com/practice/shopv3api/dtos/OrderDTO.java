@@ -8,14 +8,17 @@ public class OrderDTO {
     private Date date;
     private Long idUser;
     private Long idProduct;
+    private String userEmail;
+
     public OrderDTO() {
     }
-    public OrderDTO(Integer quantity, Float totalPrice, Date date, Long idUser, Long idProduct) {
+    public OrderDTO(Integer quantity, Float totalPrice, Date date, Long idUser, Long idProduct, String userEmail) {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.date = date;
         this.idUser = idUser;
         this.idProduct = idProduct;
+        this.userEmail = userEmail;
     }
 
     public Integer getQuantity() {
@@ -56,5 +59,9 @@ public class OrderDTO {
 
     public void setIdProduct(Long idProduct) {
         this.idProduct = idProduct;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
     }
 }

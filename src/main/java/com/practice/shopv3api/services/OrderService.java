@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 public class OrderService {
     OrderRepository orderRepository;
@@ -29,13 +27,13 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
-    public void createOrder(OrderDTO dto) {
-        User user = this.userRepository.findById(dto.getIdUser()).orElseThrow(
+    public Order createOrder(OrderDTO dto) {
+        User user = this.userRepository.findByEmail(dto.getUserEmail()).orElseThrow(
                 () -> new ShopApiException("This user couldn't be found in the database"));
         Product product = this.productRepository.findById(dto.getIdProduct()).orElseThrow(
                 () -> new ShopApiException("This product couldn't be found in the database"));
         Order newOrder = new Order(dto.getQuantity(), dto.getTotalPrice(), dto.getDate(), user, product);
-        this.orderRepository.save(newOrder);
+        return this.orderRepository.save(newOrder);
     }
 
     public List<Order> readOrders() {

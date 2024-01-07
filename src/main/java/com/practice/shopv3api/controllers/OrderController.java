@@ -3,6 +3,7 @@ package com.practice.shopv3api.controllers;
 import com.practice.shopv3api.dtos.OrderDTO;
 import com.practice.shopv3api.entities.Order;
 import com.practice.shopv3api.services.OrderService;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -24,8 +25,8 @@ public class OrderController {
 
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public void createOrder(@RequestBody OrderDTO dto) {
-        this.service.createOrder(dto);
+    public Order createOrder(@RequestBody OrderDTO dto) {
+        return this.service.createOrder(dto);
     }
 
     @GetMapping()

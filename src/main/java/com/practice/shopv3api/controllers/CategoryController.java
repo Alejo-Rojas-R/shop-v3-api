@@ -4,6 +4,7 @@ import com.practice.shopv3api.dtos.CategoryDTO;
 import com.practice.shopv3api.entities.Category;
 import com.practice.shopv3api.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,8 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public List<Category> readCategories(){
-        return service.readCategories();
+    public ResponseEntity<List<Category>> readCategories(){
+        return ResponseEntity.ok(service.readCategories());
     }
 
     @GetMapping("{id}")
