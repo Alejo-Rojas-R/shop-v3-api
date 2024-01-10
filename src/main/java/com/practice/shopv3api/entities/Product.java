@@ -105,4 +105,8 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public List<Review> getReview() {
+        return review;
+    }
 }
