@@ -1,4 +1,4 @@
-# Online Shop REST API
+# 🛒 Online Shop REST API
 
 This REST API is developed to serve as the backend of an online shop. ADMIN users are allowed to manage the products. Registered users can create orders and review products by leaving a comment and scoring. Unauthenticated users can only browse through the products.
 The API uses the HTTP protocol to allow users to interact with the system through a series of defined URLs. To design these solutions, the following technologies were used:
